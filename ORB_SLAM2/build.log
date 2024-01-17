@@ -1,0 +1,28 @@
+Configuring and building Thirdparty/DBoW2 ...
+mkdir: cannot create directory ‘build’: File exists
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/hit/liheng/code/semantic_ws/src/semantic_slam/ORB_SLAM2/Thirdparty/DBoW2/build
+[100%] Built target DBoW2
+Configuring and building Thirdparty/g2o ...
+mkdir: cannot create directory ‘build’: File exists
+-- BUILD TYPE:Release
+-- Compiling on Unix
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/hit/liheng/code/semantic_ws/src/semantic_slam/ORB_SLAM2/Thirdparty/g2o/build
+[100%] Built target g2o
+Uncompress vocabulary ...
+Configuring and building ORB_SLAM2 ...
+mkdir: cannot create directory ‘build’: File exists
+Build type: Release
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/hit/liheng/code/semantic_ws/src/semantic_slam/ORB_SLAM2/build
+[ 62%] Built target ORB_SLAM2
+[ 68%] Built target mono_euroc
+[ 75%] Built target stereo_euroc
+[ 87%] Built target mono_kitti
+[ 87%] Built target mono_tum
+[100%] Built target stereo_kitti
+[100%] Built target rgbd_tum

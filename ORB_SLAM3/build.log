@@ -1,0 +1,136 @@
+Building ROS nodes
+mkdir: cannot create directory ‘build’: File exists
+CMake Warning (dev) in CMakeLists.txt:
+  No project() command is present.  The top-level CMakeLists.txt file must
+  contain a literal, direct call to the project() command.  Add a line of
+  code such as
+
+    project(ProjectName)
+
+  near the top of the file, but after cmake_minimum_required().
+
+  CMake is pretending there is a "project(Project)" command on the first
+  line.
+This warning is for project developers.  Use -Wno-dev to suppress it.
+
+CMake Deprecation Warning at /opt/ros/noetic/share/ros/core/rosbuild/rosbuild.cmake:7 (cmake_policy):
+  The OLD behavior for policy CMP0011 will be removed from a future version
+  of CMake.
+
+  The cmake-policies(7) manual explains that the OLD behaviors of all
+  policies are deprecated and that a policy should be set to OLD only under
+  specific short-term circumstances.  Projects should be ported to the NEW
+  behavior and not rely on setting a policy to OLD.
+Call Stack (most recent call first):
+  CMakeLists.txt:2 (include)
+
+
+CMake Deprecation Warning at /opt/ros/noetic/share/ros/core/rosbuild/rosbuild.cmake:16 (cmake_policy):
+  The OLD behavior for policy CMP0002 will be removed from a future version
+  of CMake.
+
+  The cmake-policies(7) manual explains that the OLD behaviors of all
+  policies are deprecated and that a policy should be set to OLD only under
+  specific short-term circumstances.  Projects should be ported to the NEW
+  behavior and not rely on setting a policy to OLD.
+Call Stack (most recent call first):
+  CMakeLists.txt:2 (include)
+
+
+CMake Deprecation Warning at /opt/ros/noetic/share/ros/core/rosbuild/rosbuild.cmake:18 (cmake_policy):
+  The OLD behavior for policy CMP0003 will be removed from a future version
+  of CMake.
+
+  The cmake-policies(7) manual explains that the OLD behaviors of all
+  policies are deprecated and that a policy should be set to OLD only under
+  specific short-term circumstances.  Projects should be ported to the NEW
+  behavior and not rely on setting a policy to OLD.
+Call Stack (most recent call first):
+  CMakeLists.txt:2 (include)
+
+
+CMake Deprecation Warning at /opt/ros/noetic/share/ros/core/rosbuild/rosbuild.cmake:20 (cmake_policy):
+  The OLD behavior for policy CMP0005 will be removed from a future version
+  of CMake.
+
+  The cmake-policies(7) manual explains that the OLD behaviors of all
+  policies are deprecated and that a policy should be set to OLD only under
+  specific short-term circumstances.  Projects should be ported to the NEW
+  behavior and not rely on setting a policy to OLD.
+Call Stack (most recent call first):
+  CMakeLists.txt:2 (include)
+
+
+CMake Deprecation Warning at /opt/ros/noetic/share/ros/core/rosbuild/rosbuild.cmake:23 (cmake_policy):
+  The OLD behavior for policy CMP0011 will be removed from a future version
+  of CMake.
+
+  The cmake-policies(7) manual explains that the OLD behaviors of all
+  policies are deprecated and that a policy should be set to OLD only under
+  specific short-term circumstances.  Projects should be ported to the NEW
+  behavior and not rely on setting a policy to OLD.
+Call Stack (most recent call first):
+  CMakeLists.txt:2 (include)
+
+
+CMake Warning (dev) at /opt/ros/noetic/share/ros/core/rosbuild/public.cmake:155 (project):
+  Policy CMP0048 is not set: project() command manages VERSION variables.
+  Run "cmake --help-policy CMP0048" for policy details.  Use the cmake_policy
+  command to set the policy and suppress this warning.
+
+  The following variable(s) would be set to empty:
+
+    CMAKE_PROJECT_VERSION
+    CMAKE_PROJECT_VERSION_MAJOR
+    CMAKE_PROJECT_VERSION_MINOR
+    CMAKE_PROJECT_VERSION_PATCH
+Call Stack (most recent call first):
+  CMakeLists.txt:4 (rosbuild_init)
+This warning is for project developers.  Use -Wno-dev to suppress it.
+
+[rosbuild] Building package ORB_SLAM3
+[rosbuild] using multiarch 'aarch64-linux-gnu' for finding Boost
+CMake Deprecation Warning at /opt/ros/noetic/share/ros/core/rosbuild/public.cmake:366 (cmake_policy):
+  The OLD behavior for policy CMP0037 will be removed from a future version
+  of CMake.
+
+  The cmake-policies(7) manual explains that the OLD behaviors of all
+  policies are deprecated and that a policy should be set to OLD only under
+  specific short-term circumstances.  Projects should be ported to the NEW
+  behavior and not rely on setting a policy to OLD.
+Call Stack (most recent call first):
+  CMakeLists.txt:4 (rosbuild_init)
+
+
+-- Using CATKIN_DEVEL_PREFIX: /home/hit/liheng/code/semantic_ws/src/semantic_slam/ORB_SLAM3/Examples_old/ROS/ORB_SLAM3/build/devel
+-- Using CMAKE_PREFIX_PATH: /opt/ros/noetic
+-- This workspace overlays: /opt/ros/noetic
+-- Found PythonInterp: /usr/bin/python (found suitable version "3.8.10", minimum required is "3") 
+-- Using PYTHON_EXECUTABLE: /usr/bin/python
+-- Using Debian Python package layout
+-- Using empy: /usr/lib/python3/dist-packages/em.py
+-- Using CATKIN_ENABLE_TESTING: ON
+-- Skip enable_testing() for dry packages
+-- Using CATKIN_TEST_RESULTS_DIR: /home/hit/liheng/code/semantic_ws/src/semantic_slam/ORB_SLAM3/Examples_old/ROS/ORB_SLAM3/build/test_results
+-- Forcing gtest/gmock from source, though one was otherwise available.
+-- Found gtest sources under '/usr/src/googletest': gtests will be built
+-- Found gmock sources under '/usr/src/googletest': gmock will be built
+-- Found PythonInterp: /usr/bin/python (found version "3.8.10") 
+-- Using Python nosetests: /usr/bin/nosetests3
+-- catkin 0.8.10
+-- BUILD_SHARED_LIBS is on
+-- Using these message generators: gencpp;geneus;genlisp;gennodejs;genpy
+[rosbuild] Including /opt/ros/noetic/share/roslisp/rosbuild/roslisp.cmake
+[rosbuild] Including /opt/ros/noetic/share/roscpp/rosbuild/roscpp.cmake
+[rosbuild] Including /opt/ros/noetic/share/rospy/rosbuild/rospy.cmake
+Build type: Release
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/hit/liheng/code/semantic_ws/src/semantic_slam/ORB_SLAM3/Examples_old/ROS/ORB_SLAM3/build
+[  0%] Built target rospack_genmsg_libexe
+[  0%] Built target rosbuild_precompile
+[ 20%] Built target Stereo_Inertial
+[ 40%] Built target RGBD
+[ 60%] Built target Stereo
+[ 80%] Built target Mono
+[100%] Built target Mono_Inertial

@@ -145,20 +145,20 @@ int main(int argc, char **argv)
                      <<  vstrImageFilenames[seq][ni] << endl;
                 return 1;
             }
-#ifdef COMPILEDWITHC11
+//#ifdef COMPILEDWITHC11
             std::chrono::steady_clock::time_point t1 = std::chrono::steady_clock::now();
-#else
-            std::chrono::monotonic_clock::time_point t1 = std::chrono::monotonic_clock::now();
-#endif
+//#else
+//            std::chrono::monotonic_clock::time_point t1 = std::chrono::monotonic_clock::now();
+//#endif
 
             // Pass the image to the SLAM system
             SLAM.TrackMonocular(im,tframe); // TODO change to monocular_inertial
 
-#ifdef COMPILEDWITHC11
+//#ifdef COMPILEDWITHC11
             std::chrono::steady_clock::time_point t2 = std::chrono::steady_clock::now();
-#else
-            std::chrono::monotonic_clock::time_point t2 = std::chrono::monotonic_clock::now();
-#endif
+//#else
+//            std::chrono::monotonic_clock::time_point t2 = std::chrono::monotonic_clock::now();
+//#endif
 
 #ifdef REGISTER_TIMES
             t_track = t_resize + std::chrono::duration_cast<std::chrono::duration<double,std::milli> >(t2 - t1).count();

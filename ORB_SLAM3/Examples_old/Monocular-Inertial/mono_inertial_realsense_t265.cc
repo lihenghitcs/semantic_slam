@@ -230,11 +230,11 @@ int main(int argc, char **argv)
             while(!image_ready)
                 cond_image_rec.wait(lk);
 
-#ifdef COMPILEDWITHC11
+//#ifdef COMPILEDWITHC11
         std::chrono::steady_clock::time_point time_Start_Process = std::chrono::steady_clock::now();
-#else
-        std::chrono::monotonic_clock::time_point time_Start_Process = std::chrono::monotonic_clock::now();
-#endif
+//#else
+//        std::chrono::monotonic_clock::time_point time_Start_Process = std::chrono::monotonic_clock::now();
+//#endif
 
             if(count_im_buffer>1)
                 cout << count_im_buffer -1 << " dropped frs\n";
@@ -308,19 +308,19 @@ int main(int argc, char **argv)
             }
         }
 
-#ifdef COMPILEDWITHC11
+//#ifdef COMPILEDWITHC11
         std::chrono::steady_clock::time_point t_Start_Track = std::chrono::steady_clock::now();
-#else
-        std::chrono::monotonic_clock::time_point t_Start_Track = std::chrono::monotonic_clock::now();
-#endif
+//#else
+//        std::chrono::monotonic_clock::time_point t_Start_Track = std::chrono::monotonic_clock::now();
+//#endif
         // Pass the image to the SLAM system
         SLAM.TrackMonocular(im, timestamp, vImuMeas);
 
-#ifdef COMPILEDWITHC11
+//#ifdef COMPILEDWITHC11
         std::chrono::steady_clock::time_point t_End_Track = std::chrono::steady_clock::now();
-#else
-        std::chrono::monotonic_clock::time_point t_End_Track = std::chrono::monotonic_clock::now();
-#endif
+//#else
+//        std::chrono::monotonic_clock::time_point t_End_Track = std::chrono::monotonic_clock::now();
+//#endif
 
 #ifdef REGISTER_TIMES
         t_track = t_resize + std::chrono::duration_cast<std::chrono::duration<double,std::milli> >(t_End_Track - t_Start_Track).count();
