@@ -13,6 +13,7 @@ from __future__ import print_function
 import sys
 import rospy
 from sensor_msgs.msg import Image
+import cv2
 from cv_bridge import CvBridge, CvBridgeError
 
 import numpy as np

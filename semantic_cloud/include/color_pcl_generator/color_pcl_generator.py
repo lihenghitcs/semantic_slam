@@ -27,7 +27,7 @@ class ColorPclGenerator:
         self.intrinsic = intrinsic
         self.num_semantic_colors = 3 # Number of semantic colors to be sent in the message
         # Allocate arrays
-        x_index = np.array([range(width)*height], dtype = '<f4')
+        x_index = np.array([list(range(width))*height], dtype = '<f4')
         y_index = np.array([[i]*width for i in range(height)], dtype = '<f4').ravel()
         self.xy_index = np.vstack((x_index, y_index)).T # x,y
         self.xyd_vect = np.zeros([width*height, 3], dtype = '<f4') # x,y,depth
@@ -131,7 +131,8 @@ class ColorPclGenerator:
     def make_ros_cloud(self, stamp):
         # Assign data to ros msg
         # We should send directly in bytes, send in as a list is too slow, numpy tobytes is too slow, takes 0.3s.
-        self.cloud_ros.data = np.getbuffer(self.ros_data.ravel())[:]
+        #self.cloud_ros.data = np.getbuffer(self.ros_data.ravel())[:]
+        self.cloud_ros.data = self.ros_data.ravel().tobytes()
         self.cloud_ros.header.stamp = stamp
         return self.cloud_ros
 

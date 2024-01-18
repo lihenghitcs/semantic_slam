@@ -20,9 +20,9 @@ Build type: Release
 -- Generating done
 -- Build files have been written to: /home/hit/liheng/code/semantic_ws/src/semantic_slam/ORB_SLAM2/build
 [ 62%] Built target ORB_SLAM2
-[ 68%] Built target mono_euroc
-[ 75%] Built target stereo_euroc
-[ 87%] Built target mono_kitti
-[ 87%] Built target mono_tum
-[100%] Built target stereo_kitti
+[ 68%] Built target mono_kitti
+[ 75%] Built target stereo_kitti
+[ 81%] Built target mono_tum
+[ 93%] Built target stereo_euroc
+[ 93%] Built target mono_euroc
 [100%] Built target rgbd_tum
