@@ -115,8 +115,8 @@ class ColorPclGenerator:
         bgr_img = bgr_img.view('<u1')
         depth_img = depth_img.view('<f4')
         # Add depth information
-        self.xyd_vect[:,0:2] = self.xy_index * depth_img.reshape(-1,1)
-        self.xyd_vect[:,2:3] = depth_img.reshape(-1,1)
+        self.xyd_vect[:,0:2] = self.xy_index * depth_img.reshape(-1,1) / 1000
+        self.xyd_vect[:,2:3] = depth_img.reshape(-1,1) / 1000
         self.XYZ_vect = self.xyd_vect.dot(self.intrinsic.I.T)
         # Convert to ROS point cloud message in a vectorialized manner
         # ros msg data: [x,y,z,0,bgr0,0,0,0,color0,color1,color2,0,confidence0,confidence1,confidenc2,0] (little endian float32)

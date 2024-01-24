@@ -40,12 +40,29 @@
 #include <geometry_msgs/TransformStamped.h>
 #include <tf2/LinearMath/Quaternion.h>
 
+#include <geometry_msgs/PoseStamped.h> 
+#include <tf/tf.h> 
+#include <tf/transform_datatypes.h> 
+#include"../../../include/Converter.h"
+#include <nav_msgs/Path.h>
+#include <nav_msgs/Odometry.h>
+
 using namespace std;
 
 class ImageGrabber
 {
 public:
-    ImageGrabber(ORB_SLAM2::System* pSLAM):mpSLAM(pSLAM){lastStamp = ros::Time::now(); frameCounter = 0;}
+    ros::NodeHandle nh;
+    nav_msgs::Path camerapath;
+
+    ros::Publisher pub_pose = nh.advertise<geometry_msgs::PoseStamped>("Pose", 100);
+	ros::Publisher pub_odom= nh.advertise<nav_msgs::Odometry> ("Odometry", 10); 
+	ros::Publisher pub_camerapath= nh.advertise<nav_msgs::Path> ("Path", 10); 
+
+    ImageGrabber(ORB_SLAM2::System* pSLAM):mpSLAM(pSLAM),nh("~"){
+        lastStamp = ros::Time::now();
+        frameCounter = 0;
+    }
 
     void GrabRGBD(const sensor_msgs::ImageConstPtr& msgRGB,const sensor_msgs::ImageConstPtr& msgD);
 
@@ -75,8 +92,8 @@ int main(int argc, char **argv)
 
     ros::NodeHandle nh;
 
-    message_filters::Subscriber<sensor_msgs::Image> rgb_sub(nh, "/camera/color/image_raw", 1);
-    message_filters::Subscriber<sensor_msgs::Image> depth_sub(nh, "/camera/aligned_depth_to_color/image_raw", 1);
+    message_filters::Subscriber<sensor_msgs::Image> rgb_sub(nh, "/camera/rgb/image_raw", 1);
+    message_filters::Subscriber<sensor_msgs::Image> depth_sub(nh, "camera/depth_registered/image_raw", 1);
     typedef message_filters::sync_policies::ApproximateTime<sensor_msgs::Image, sensor_msgs::Image> sync_pol;
     message_filters::Synchronizer<sync_pol> sync(sync_pol(10), rgb_sub,depth_sub);
     sync.registerCallback(boost::bind(&ImageGrabber::GrabRGBD,&igb,_1,_2));
@@ -88,6 +105,7 @@ int main(int argc, char **argv)
 
     // Save camera trajectory
     SLAM.SaveKeyFrameTrajectoryTUM("KeyFrameTrajectory.txt");
+    SLAM.SaveTrajectoryTUM("CameraTrajectory.txt");
 
     ros::shutdown();
 
@@ -133,13 +151,27 @@ void ImageGrabber::GrabRGBD(const sensor_msgs::ImageConstPtr& msgRGB,const senso
 
     if(Tcw.empty())
         return;
+    cv::Mat Twc =Tcw.inv();
+    cv::Mat tWC=  Twc.rowRange(0,3).col(3);
     cv::Mat tcw = Tcw.rowRange(0,3).col(3);
+
+
+    cv::Mat RWC= Twc.rowRange(0,3).colRange(0,3); 
+    //cv::Mat TWC=orbslam->mpTracker->mCurrentFrame.mTcw.inv();  
+    //cv::Mat RWC= Tcw.rowRange(0,3).colRange(0,3).t();//Tcw.rowRange(0,3).colRange(0,3);  
+    //cv::Mat tWC=  -RWC*Tcw.rowRange(0,3).col(3);//Tcw.rowRange(0,3).col(3);
+
+    Eigen::Matrix<double,3,3> eigMat ;
+    eigMat <<RWC.at<float>(0,0),RWC.at<float>(0,1),RWC.at<float>(0,2),
+                    RWC.at<float>(1,0),RWC.at<float>(1,1),RWC.at<float>(1,2),
+                    RWC.at<float>(2,0),RWC.at<float>(2,1),RWC.at<float>(2,2);
+    Eigen::Quaterniond q2(eigMat);
 
     // Publish tf transform
     static tf2_ros::TransformBroadcaster br;
     geometry_msgs::TransformStamped transformStamped;
     transformStamped.header.stamp = cv_ptrRGB->header.stamp;
-    transformStamped.header.frame_id = "camera_rgb_optical_frame"; 
+    transformStamped.header.frame_id = "camera_color_optical_frame"; 
     transformStamped.child_frame_id = "world";
     transformStamped.transform.translation.x = tcw.at<float>(0);
     transformStamped.transform.translation.y = tcw.at<float>(1);
@@ -151,6 +183,58 @@ void ImageGrabber::GrabRGBD(const sensor_msgs::ImageConstPtr& msgRGB,const senso
     transformStamped.transform.rotation.w = q[3];
 
     br.sendTransform(transformStamped);
+
+    geometry_msgs::PoseStamped pose;
+    pose.header.stamp = ros::Time::now();
+    pose.header.frame_id ="world";
+
+    cv::Mat Rwc = Tcw.rowRange(0,3).colRange(0,3).t(); // Rotation information
+    cv::Mat twc = -Rwc*Tcw.rowRange(0,3).col(3); // translation information
+    vector<float> q1 = ORB_SLAM2::Converter::toQuaternion(Rwc);
+
+    tf::Transform new_transform;
+    new_transform.setOrigin(tf::Vector3(twc.at<float>(0, 0), twc.at<float>(0, 1), twc.at<float>(0, 2)));
+
+    tf::Quaternion quaternion(q1[0], q1[1], q1[2], q1[3]);
+    new_transform.setRotation(quaternion);
+
+    tf::poseTFToMsg(new_transform, pose.pose);
+    pub_pose.publish(pose);
+
+    std_msgs::Header header ;
+    header.stamp =msgRGB->header.stamp;
+    header.seq = msgRGB->header.seq;
+    header.frame_id="world";
+
+    nav_msgs::Odometry odom_msg;
+    odom_msg.pose.pose.position.x=twc.at<float>(0);
+    odom_msg.pose.pose.position.y=twc.at<float>(1);			 
+    odom_msg.pose.pose.position.z=twc.at<float>(2);
+
+    odom_msg.pose.pose.orientation.x=q2.x();
+    odom_msg.pose.pose.orientation.y=q2.y();
+    odom_msg.pose.pose.orientation.z=q2.z();
+    odom_msg.pose.pose.orientation.w=q2.w();
+
+    odom_msg.header=header;
+    odom_msg.child_frame_id="base_link";
+
+
+    geometry_msgs::PoseStamped tcw_msg; 					
+    tcw_msg.pose.position.x=tWC.at<float>(0);
+    tcw_msg.pose.position.y=tWC.at<float>(1);			 
+    tcw_msg.pose.position.z=tWC.at<float>(2);
+    tcw_msg.pose.orientation.x=q2.x();
+    tcw_msg.pose.orientation.y=q2.y();
+    tcw_msg.pose.orientation.z=q2.z();
+    tcw_msg.pose.orientation.w=q2.w();
+    tcw_msg.header=header;
+
+
+    camerapath.header =header;
+    camerapath.poses.push_back(tcw_msg);     
+    pub_odom.publish(odom_msg);
+    pub_camerapath.publish(camerapath);  
 }
 
 

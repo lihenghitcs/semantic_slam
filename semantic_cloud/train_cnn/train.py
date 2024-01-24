@@ -96,7 +96,7 @@ def train(args):
     #model = get_model(model_name, n_classes, version = args.dataset+'_res101')
     if do_finetuning:
         # pspnet pretrained on ade20k
-        pretrained_model_path = '/home/interns/xuan/models/pspnet_50_ade20k.pth'
+        pretrained_model_path = '/home/hit/models/pspnet_50_ade20k.pth'
         # pspnet pretrained on pascal VOC
         #pretrained_model_path = '/home/interns/xuan/models/pspnet_101_pascalvoc.pth'
         pretrained_state = convert_state_dict(torch.load(pretrained_model_path)['model_state']) # remove 'module' in keys

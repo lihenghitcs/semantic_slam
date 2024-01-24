@@ -1,6 +1,8 @@
 <launch>
 
   <!-- ORB_SLAM2 RGBD -->
-  <node pkg="orb_slam2" type="rgbd" name="rgbd" output="screen" args="$(find orb_slam2)../../../Vocabulary/ORBvoc.txt $(find semantic_slam)/params/d435.yaml"/>
+  <!--node pkg="orb_slam2" type="rgbd" name="rgbd" output="screen" args="$(find orb_slam2)../../../Vocabulary/ORBvoc.txt $(find semantic_slam)/params/d435.yaml"/-->
+  <node pkg="orb_slam2" type="rgbd" name="rgbd" output="screen" args="$(find orb_slam2)../../../Vocabulary/ORBvoc.bin $(find orb_slam2)../../RGB-D/RealSense_d455.yaml /camera/rgb/image_raw:=/camera/color/image_raw /camera/depth_registered/image_raw:=/camera/aligned_depth_to_color/image_raw"/>
+  <!--node pkg="ORB_SLAM2" type="RGBD" name="RGBD" output="screen" args="$(find ORB_SLAM2)../../../Vocabulary/ORBvoc.bin $(find semantic_slam)/params/xtion.yaml"/-->
 
 </launch>

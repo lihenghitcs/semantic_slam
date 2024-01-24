@@ -71,7 +71,7 @@ int main(int argc, char **argv)
     ImageGrabber igb(&SLAM);
 
     ros::NodeHandle nodeHandler;
-    ros::Subscriber sub = nodeHandler.subscribe("/camera/color/image_raw", 1, &ImageGrabber::GrabImage,&igb);
+    ros::Subscriber sub = nodeHandler.subscribe("/camera/image_raw", 1, &ImageGrabber::GrabImage,&igb);
 
     ros::spin();
 
@@ -120,7 +120,7 @@ void ImageGrabber::GrabImage(const sensor_msgs::ImageConstPtr& msg)
     static tf2_ros::TransformBroadcaster br;
     geometry_msgs::TransformStamped transformStamped;
     transformStamped.header.stamp = cv_ptr->header.stamp;
-    transformStamped.header.frame_id = "camera_rgb_optical_frame";
+    transformStamped.header.frame_id = "camera_color_optical_frame";
     transformStamped.child_frame_id = "world";
     transformStamped.transform.translation.x = tcw.at<float>(0);
     transformStamped.transform.translation.y = tcw.at<float>(1);
