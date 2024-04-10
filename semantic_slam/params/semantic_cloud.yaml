@@ -1,21 +1,55 @@
 # Camera intrinsic matrix parameters (OpenCV)
-camera:
-  fx: 386.2384033203125
-  fy: 385.8673095703125
-  cx: 321.3580017089844
-  cy: 245.3740234375
 
-  width: 640
-  height: 480
+# d455
+# camera:
+#   fx: 635.7012939453125
+#   fy: 646.7461547851562
+#   cx: 634.2105712890625
+#   cy: 366.32452392578125
+
+#   width: 1280
+#   height: 720
+
+# d455
+# camera:
+#   fx: 386.2384033203125
+#   fy: 385.8673095703125
+#   cx: 321.3580017089844
+#   cy: 245.3740234375
+
+#   width: 640
+#   height: 480
+
+# d435
+camera:
+  fx: 913.6182861328125
+  fy: 913.6422729492188
+  cx: 644.5372924804688
+  cy: 379.58953857421875
+
+  width: 1280
+  height: 720
+
+
+# d435
+# camera:
+#   fx: 609.0789184570312
+#   fy: 609.0948486328125
+#   cx: 323.0248718261719
+#   cy: 253.05967712402344
+
+#   width: 640
+#   height: 480
 
 semantic_pcl:
   color_image_topic: "/camera/color/image_raw"
   #color_image_topic: "/camera/rgb/image_raw"
   depth_image_topic: "/camera/aligned_depth_to_color/image_raw"
   #depth_image_topic: "/camera/depth_registered/image_raw"
-  point_type: 1
+  point_type: 0
   frame_id: "camera_color_optical_frame"
+  # frame_id: "body"
   dataset: "ade20k" # sunrgbd
   #dataset: "sunrgbd" # sunrgbd
   model_path: "/home/hit/models/pspnet_50_ade20k.pth"
-  #model_path: "/home/interns/xuan/models/pspnet_sunrgbd_best_model180625_5k.pth"
+  #model_path: "/home/hit/models/pspnet_sunrgbd_best_model180625_5k.pth"

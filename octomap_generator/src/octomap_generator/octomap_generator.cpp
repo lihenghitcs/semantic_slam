@@ -100,7 +100,7 @@ void OctomapGenerator<PCLColor, ColorOcTree>::updateColorAndSemantics(PCLColor* 
       octomap_.averageNodeColor(it->x, it->y, it->z, it->r, it->g, it->b);
     }
   }
-  octomap::ColorOcTreeNode* node = octomap_.search(pcl_cloud->begin()->x, pcl_cloud->begin()->y, pcl_cloud->begin()->z);
+  //octomap::ColorOcTreeNode* node = octomap_.search(pcl_cloud->begin()->x, pcl_cloud->begin()->y, pcl_cloud->begin()->z);
   //std::cout << "Example octree node: " << std::endl;
   //std::cout << "Color: " << node->getColor()<< std::endl;
 }
@@ -124,7 +124,7 @@ void OctomapGenerator<PCLSemanticsMax, SemanticsOctreeMax>::updateColorAndSemant
         octomap_.updateNodeSemantics(it->x, it->y, it->z, sem);
     }
   }
-    SemanticsOcTreeNodeMax* node = octomap_.search(pcl_cloud->begin()->x, pcl_cloud->begin()->y, pcl_cloud->begin()->z);
+    //SemanticsOcTreeNodeMax* node = octomap_.search(pcl_cloud->begin()->x, pcl_cloud->begin()->y, pcl_cloud->begin()->z);
     //std::cout << "Example octree node: " << std::endl;
     //std::cout << "Color: " << node->getColor()<< std::endl;
     //std::cout << "Semantics: " << node->getSemantics() << std::endl;
@@ -152,7 +152,7 @@ void OctomapGenerator<PCLSemanticsBayesian, SemanticsOctreeBayesian>::updateColo
         octomap_.updateNodeSemantics(it->x, it->y, it->z, sem);
     }
   }
-    SemanticsOcTreeNodeBayesian* node = octomap_.search(pcl_cloud->begin()->x, pcl_cloud->begin()->y, pcl_cloud->begin()->z);
+    //SemanticsOcTreeNodeBayesian* node = octomap_.search(pcl_cloud->begin()->x, pcl_cloud->begin()->y, pcl_cloud->begin()->z);
     //std::cout << "Example octree node: " << std::endl;
     //std::cout << "Color: " << node->getColor()<< std::endl;
     //std::cout << "Semantics: " << node->getSemantics() << std::endl;

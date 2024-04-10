@@ -28,15 +28,26 @@
 #include <message_filters/time_synchronizer.h>
 #include <message_filters/sync_policies/approximate_time.h>
 
+#include <nav_msgs/Path.h>
+#include <nav_msgs/Odometry.h>
+#include <geometry_msgs/TransformStamped.h>
+#include <geometry_msgs/PoseStamped.h> 
+#include <tf/tf.h> 
+#include <tf/transform_datatypes.h> 
+#include <tf2/LinearMath/Quaternion.h>
+#include <tf2_ros/transform_broadcaster.h>
+
 #include<opencv2/core/core.hpp>
 
 #include"../../../include/System.h"
+#include <opencv2/core/eigen.hpp>
 
 using namespace std;
 
 class ImageGrabber
 {
 public:
+    ros::NodeHandle nh;
     ImageGrabber(ORB_SLAM3::System* pSLAM):mpSLAM(pSLAM){}
 
     void GrabStereo(const sensor_msgs::ImageConstPtr& msgLeft,const sensor_msgs::ImageConstPtr& msgRight);
@@ -44,6 +55,12 @@ public:
     ORB_SLAM3::System* mpSLAM;
     bool do_rectify;
     cv::Mat M1l,M2l,M1r,M2r;
+
+    nav_msgs::Path camerapath;
+    cv_bridge::CvImageConstPtr cv_ptr;
+    ros::Publisher pub_pose = nh.advertise<geometry_msgs::PoseStamped>("Pose", 100);
+    ros::Publisher pub_odom= nh.advertise<nav_msgs::Odometry> ("Odometry", 10); 
+    ros::Publisher pub_camerapath= nh.advertise<nav_msgs::Path> ("Path", 10); 
 };
 
 int main(int argc, char **argv)
@@ -153,17 +170,116 @@ void ImageGrabber::GrabStereo(const sensor_msgs::ImageConstPtr& msgLeft,const se
         return;
     }
 
+    Sophus::SE3f Tcw_SE3f;
+
     if(do_rectify)
     {
         cv::Mat imLeft, imRight;
         cv::remap(cv_ptrLeft->image,imLeft,M1l,M2l,cv::INTER_LINEAR);
         cv::remap(cv_ptrRight->image,imRight,M1r,M2r,cv::INTER_LINEAR);
-        mpSLAM->TrackStereo(imLeft,imRight,cv_ptrLeft->header.stamp.toSec());
+        Tcw_SE3f = mpSLAM->TrackStereo(imLeft,imRight,cv_ptrLeft->header.stamp.toSec());
     }
     else
     {
-        mpSLAM->TrackStereo(cv_ptrLeft->image,cv_ptrRight->image,cv_ptrLeft->header.stamp.toSec());
+        Tcw_SE3f = mpSLAM->TrackStereo(cv_ptrLeft->image,cv_ptrRight->image,cv_ptrLeft->header.stamp.toSec());
     }
+
+    cv::Mat Tcw;
+    Eigen::Matrix4f Tcw_Matrix = Tcw_SE3f.matrix();
+    cv::eigen2cv(Tcw_Matrix, Tcw);
+
+    if(Tcw.empty())
+        return;
+    cv::Mat Twc =Tcw.inv();
+    cv::Mat tWC=  Twc.rowRange(0,3).col(3);
+    cv::Mat tcw = Tcw.rowRange(0,3).col(3);
+
+
+    cv::Mat RWC= Twc.rowRange(0,3).colRange(0,3); 
+    //cv::Mat TWC=orbslam->mpTracker->mCurrentFrame.mTcw.inv();  
+    //cv::Mat RWC= Tcw.rowRange(0,3).colRange(0,3).t();//Tcw.rowRange(0,3).colRange(0,3);  
+    //cv::Mat tWC=  -RWC*Tcw.rowRange(0,3).col(3);//Tcw.rowRange(0,3).col(3);
+
+    Eigen::Matrix<double,3,3> eigMat ;
+    eigMat <<RWC.at<float>(0,0),RWC.at<float>(0,1),RWC.at<float>(0,2),
+                    RWC.at<float>(1,0),RWC.at<float>(1,1),RWC.at<float>(1,2),
+                    RWC.at<float>(2,0),RWC.at<float>(2,1),RWC.at<float>(2,2);
+    Eigen::Quaterniond q2(eigMat);
+    
+    // -----------------------------------
+    // Publish tf transform
+    static tf2_ros::TransformBroadcaster br;
+    geometry_msgs::TransformStamped transformStamped;
+    transformStamped.header.stamp = cv_ptrLeft->header.stamp;
+    transformStamped.header.frame_id = "camera_infra2_optical_frame"; 
+    transformStamped.child_frame_id = "world";
+    transformStamped.transform.translation.x = tcw.at<float>(0);
+    transformStamped.transform.translation.y = tcw.at<float>(1);
+    transformStamped.transform.translation.z = tcw.at<float>(2);
+    // -----------------------------------
+    vector<float> q = ORB_SLAM3::Converter::toQuaternion(Tcw.rowRange(0,3).colRange(0,3));
+    transformStamped.transform.rotation.x = q[0];
+    transformStamped.transform.rotation.y = q[1];
+    transformStamped.transform.rotation.z = q[2];
+    transformStamped.transform.rotation.w = q[3];
+    // -----------------------------------
+
+    br.sendTransform(transformStamped);
+
+    geometry_msgs::PoseStamped pose;
+    pose.header.stamp = ros::Time::now();
+    pose.header.frame_id ="world";
+
+    cv::Mat Rwc = Tcw.rowRange(0,3).colRange(0,3).t(); // Rotation information
+    cv::Mat twc = -Rwc*Tcw.rowRange(0,3).col(3); // translation information
+    vector<float> q1 = ORB_SLAM3::Converter::toQuaternion(Rwc);
+
+    tf::Transform new_transform;
+    new_transform.setOrigin(tf::Vector3(twc.at<float>(0, 0), twc.at<float>(0, 1), twc.at<float>(0, 2)));
+
+    tf::Quaternion quaternion(q1[0], q1[1], q1[2], q1[3]);
+    new_transform.setRotation(quaternion);
+
+    tf::poseTFToMsg(new_transform, pose.pose);
+    pub_pose.publish(pose);
+
+    std_msgs::Header header ;
+    header.stamp = cv_ptrLeft->header.stamp;
+    header.seq = cv_ptrLeft->header.seq;
+    header.frame_id="world";
+
+    nav_msgs::Odometry odom_msg;
+    odom_msg.pose.pose.position.x=twc.at<float>(0);
+    odom_msg.pose.pose.position.y=twc.at<float>(1);			 
+    odom_msg.pose.pose.position.z=twc.at<float>(2);
+
+    odom_msg.pose.pose.orientation.x=q2.x();
+    odom_msg.pose.pose.orientation.y=q2.y();
+    odom_msg.pose.pose.orientation.z=q2.z();
+    odom_msg.pose.pose.orientation.w=q2.w();
+
+    odom_msg.header=header;
+    odom_msg.child_frame_id="base_link";
+
+
+    geometry_msgs::PoseStamped tcw_msg; 					
+    tcw_msg.pose.position.x=tWC.at<float>(0);
+    tcw_msg.pose.position.y=tWC.at<float>(1);			 
+    tcw_msg.pose.position.z=tWC.at<float>(2);
+    tcw_msg.pose.orientation.x=q2.x();
+    tcw_msg.pose.orientation.y=q2.y();
+    tcw_msg.pose.orientation.z=q2.z();
+    tcw_msg.pose.orientation.w=q2.w();
+    tcw_msg.header=header;
+
+
+    camerapath.header =header;
+    camerapath.poses.push_back(tcw_msg);     
+    pub_odom.publish(odom_msg);
+    pub_camerapath.publish(camerapath);
+
+    std::chrono::milliseconds tSleep(1);
+    std::this_thread::sleep_for(tSleep);
 
 }
 

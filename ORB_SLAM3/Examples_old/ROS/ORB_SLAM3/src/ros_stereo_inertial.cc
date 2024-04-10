@@ -314,7 +314,7 @@ void ImageGrabber::SyncWithImu()
       static tf2_ros::TransformBroadcaster br;
       geometry_msgs::TransformStamped transformStamped;
       transformStamped.header.stamp = cv_ptr->header.stamp;
-      transformStamped.header.frame_id = "camera_color_optical_frame"; 
+      transformStamped.header.frame_id = "camera_infra1_optical_frame"; 
       transformStamped.child_frame_id = "world";
       transformStamped.transform.translation.x = tcw.at<float>(0);
       transformStamped.transform.translation.y = tcw.at<float>(1);

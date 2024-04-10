@@ -8,30 +8,37 @@ File.version: "1.0"
 Camera.type: "PinHole"
 
 # Right Camera calibration and distortion parameters (OpenCV)
-# Camera1.fx: 609.0789184570312
-# Camera1.fy: 609.0948486328125
-# Camera1.cx: 323.0248718261719
-# Camera1.cy: 253.05967712402344
-
-Camera1.fx: 906.3725520311955
-Camera1.fy: 906.2934425806998
-Camera1.cx: 642.875356145989
-Camera1.cy: 379.74274366201496
+# Parameter configured 20/12
+Camera1.fx: 635.7012939453125
+Camera1.fy: 646.7461547851562
+Camera1.cx: 634.2105712890625
+Camera1.cy: 366.32452392578125
 
 # distortion parameters
-Camera1.k1: 0.0850046722739248
-Camera1.k2: -0.1600286064876244
-Camera1.p1: 0.0009949551914328408
-Camera1.p2: -0.0010012836268568565
+# Parameter configured 20/12
+# decided to keep all the
+# distortion parameters
+# set to zero as provided
+# by the examples
+Camera1.k1: -0.056589674204587936
+Camera1.k2: 0.0660891905426979
+Camera1.p1: -6.55842522974126e-05
+Camera1.p2: 0.0002534468949306756
+Camera1.k3: -0.020881107077002525
 
 # Camera resolution
+# Parameter configured 7/12
 Camera.width: 1280
 Camera.height: 720
 
-# Camera frames per second 
+# Camera frames per second
+# Parameter configured 7/12
 Camera.fps: 30
 
+Camera.bf: 46.01
+
 # Color order of the images (0: BGR, 1: RGB. It is ignored if images are grayscale)
+# Parameter configured 7/12
 Camera.RGB: 1
 
 Stereo.ThDepth: 40.0
@@ -45,27 +52,31 @@ IMU.T_b_c1: !!opencv-matrix
    rows: 4
    cols: 4
    dt: f
-   data: [ 0.99987415,  0.0026874 , -0.01563528, -0.00867248,
-            -0.00266351,  0.99999525,  0.00154857,  0.00676876,
-            0.01563936, -0.00150673,  0.99987656,  0.00321451,
-            0.        ,  0.        ,  0.        ,  1.        ]
+   data: [ 0.99997832, -0.00620916 , 0.00219188 ,-0.05084614,
+           0.00619415, 0.99995777 , 0.00678918 ,-0.02116661,
+          -0.00223394, -0.00677546 , 0.99997455 ,-0.02298333,
+           0., 0., 0., 1.]
 
 
 # Do not insert KFs when recently lost
+# 20/12 optional, kept as suggested by the example
 IMU.InsertKFsWhenLost: 0
 
 # IMU noise (Use those from VINS-mono)
-IMU.NoiseGyro: 1.6825171160468298e-03 # 3 # 2.44e-4 #1e-3 # rad/s^0.5
-IMU.NoiseAcc: 1.2274511464066397e-02 #2 # 1.47e-3 #1e-2 # m/s^1.5
-IMU.GyroWalk: 1.0705915641183744e-05 # rad/s^1.5
-IMU.AccWalk: 2.3570491757885162e-04 # m/s^2.5
+# Parameter configured 22/12 
+IMU.NoiseGyro: 0.00013062521816219243 # 3 # 2.44e-4 #1e-3 # rad/s^0.5
+IMU.NoiseAcc: 0.0015738017400346728 #2 # 1.47e-3 #1e-2 # m/s^1.5
+IMU.GyroWalk: 2.4663463419911525e-06  # rad/s^1.5
+IMU.AccWalk: 0.00012548390342628348  # m/s^2.5
 IMU.Frequency: 200.0
 
 #--------------------------------------------------------------------------------------------
 # ORB Parameters
+# 13/12 These are parameters are related to ORBSLAM, can be keep as they are
 #--------------------------------------------------------------------------------------------
 # ORB Extractor: Number of features per image
-ORBextractor.nFeatures: 1250
+#ORBextractor.nFeatures: 1250
+ORBextractor.nFeatures: 500
 
 # ORB Extractor: Scale factor between levels in the scale pyramid 	
 ORBextractor.scaleFactor: 1.2
@@ -82,6 +93,7 @@ ORBextractor.minThFAST: 7
 
 #--------------------------------------------------------------------------------------------
 # Viewer Parameters
+# 13/12 These are parameters are related to ORBSLAM, can be keep as they are
 #--------------------------------------------------------------------------------------------
 Viewer.KeyFrameSize: 0.05
 Viewer.KeyFrameLineWidth: 1.0
@@ -93,3 +105,6 @@ Viewer.ViewpointX: 0.0
 Viewer.ViewpointY: -0.7
 Viewer.ViewpointZ: -3.5
 Viewer.ViewpointF: 500.0
+
+System.SaveAtlasToFile: "map.osa"
+System.LoadAtlasFromFile: "map.osa"

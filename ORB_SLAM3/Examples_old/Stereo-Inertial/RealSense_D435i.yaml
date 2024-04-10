@@ -6,42 +6,42 @@
 Camera.type: "PinHole"
 
 # Left Camera calibration and distortion parameters (OpenCV)
-Camera.fx: 382.613
-Camera.fy: 382.613
-Camera.cx: 320.183
-Camera.cy: 236.455
+Camera.fx: 640.5797822232848
+Camera.fy: 641.3475649871203
+Camera.cx: 636.2150902224894
+Camera.cy: 359.2247104150461
 
 # distortion parameters
-Camera.k1: 0.0
-Camera.k2: 0.0
-Camera.p1: 0.0
-Camera.p2: 0.0
+Camera.k1: -0.0072704336121791465
+Camera.k2: 0.021474526217512446
+Camera.p1: 0.0007313461522751421
+Camera.p2: -0.0037676561972992536
 
 # Right Camera calibration and distortion parameters (OpenCV)
-Camera2.fx: 382.613
-Camera2.fy: 382.613
-Camera2.cx: 320.183
-Camera2.cy: 236.455
+Camera2.fx: 639.4127100238311
+Camera2.fy: 639.7229663856231
+Camera2.cx: 651.6843567957918
+Camera2.cy: 352.93392833718656
 
 # distortion parameters
-Camera2.k1: 0.0
-Camera2.k2: 0.0
-Camera2.p1: 0.0
-Camera2.p2: 0.0
+Camera2.k1: 0.008053461006686429
+Camera2.k2: -0.005388568034543767
+Camera2.p1: -0.002303753563579905
+Camera2.p2: 0.0057268776588971435
 
 Tlr: !!opencv-matrix
   rows: 3
   cols: 4
   dt: f
-  data: [1.0, 0.0, 0.0, 0.0499585,
-         0.0, 1.0, 0.0, 0.0,
-         0.0, 0.0, 1.0, 0.0,
+  data: [9.99734890e-01,  4.18123860e-04,  2.30211675e-02,5.01154967e-02,
+        -2.01783338e-04,  9.99955808e-01, -9.39898201e-03,-1.19308068e-04,
+        -2.30240801e-02,  9.39184496e-03,  9.99690795e-01,-2.40667406e-04,
          0.0, 0.0, 0.0, 1.0]
 
 
 # Camera resolution
-Camera.width: 640
-Camera.height: 480
+Camera.width: 1280
+Camera.height: 720
 
 # Camera frames per second 
 Camera.fps: 30.0
@@ -50,7 +50,7 @@ Camera.fps: 30.0
 Camera.RGB: 1
 
 # Image scale, it changes the image size to be processed (<1.0: reduce, >1.0: increase)
-Camera.imageScale: 0.5 # 0.5 #0.7071 # 1/sqrt(2)
+Camera.imageScale: 1 # 0.5 #0.7071 # 1/sqrt(2)
 
 # Close/Far threshold. Baseline times.
 ThDepth: 40.0
@@ -62,19 +62,19 @@ Tbc: !!opencv-matrix
    rows: 4
    cols: 4
    dt: f
-   data: [1,0,0,-0.005,
-         0,1,0,-0.005,
-         0,0,1,0.0117,
+   data: [0.99981005, -0.00443028, -0.01897991, -0.00776646,
+          0.00450667,  0.99998191,  0.00398354,  0.00716782,
+          0.01896192, -0.00406832,  0.99981193,  0.0395411 ,
          0.0, 0.0, 0.0, 1.0]
 
 # Do not insert KFs when recently lost
 InsertKFsWhenLost: 0
 
 # IMU noise (Use those from VINS-mono)
-IMU.NoiseGyro: 1e-3 # 2.44e-4 #1e-3 # rad/s^0.5
-IMU.NoiseAcc: 1e-2 # 1.47e-3 #1e-2 # m/s^1.5
-IMU.GyroWalk: 1e-6 # rad/s^1.5
-IMU.AccWalk: 1e-4 # m/s^2.5
+IMU.NoiseGyro: 1.6825171160468298e-03 # 2.44e-4 #1e-3 # rad/s^0.5
+IMU.NoiseAcc: 1.2274511464066397e-02 # 1.47e-3 #1e-2 # m/s^1.5
+IMU.GyroWalk: 1.0705915641183744e-05 # rad/s^1.5
+IMU.AccWalk: 2.3570491757885162e-04 # m/s^2.5
 IMU.Frequency: 200
 
 #--------------------------------------------------------------------------------------------

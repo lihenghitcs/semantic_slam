@@ -114,7 +114,7 @@ class SemanticCloud:
             if dataset == 'sunrgbd': # If use version fine tuned on sunrgbd dataset
                 self.n_classes = 38 # Semantic class number
                 self.model = get_model(model_name, self.n_classes, version = 'sunrgbd_res50')
-                state = torch.load(model_path)
+                state = torch.load(model_path, map_location='cuda:0')
                 self.model.load_state_dict(state)
                 self.cnn_input_size = (321, 321)
                 self.mean = np.array([104.00699, 116.66877, 122.67892]) # Mean value of dataset
@@ -149,13 +149,13 @@ class SemanticCloud:
             cy = rospy.get_param('/camera/cy')
             intrinsic = np.matrix([[fx, 0, cx], [0, fy, cy], [0, 0, 1]], dtype = np.float32)
             self.pcl_pub = rospy.Publisher("/semantic_pcl/semantic_pcl", PointCloud2, queue_size = 1)
-            self.color_sub = message_filters.Subscriber(rospy.get_param('/semantic_pcl/color_image_topic'), Image, queue_size = 1, buff_size = 30*480*640)
-            self.depth_sub = message_filters.Subscriber(rospy.get_param('/semantic_pcl/depth_image_topic'), Image, queue_size = 1, buff_size = 40*480*640 ) # increase buffer size to avoid delay (despite queue_size = 1)
+            self.color_sub = message_filters.Subscriber(rospy.get_param('/semantic_pcl/color_image_topic'), Image, queue_size = 1, buff_size = 30*self.img_height*self.img_width)
+            self.depth_sub = message_filters.Subscriber(rospy.get_param('/semantic_pcl/depth_image_topic'), Image, queue_size = 1, buff_size = 40*self.img_height*self.img_width ) # increase buffer size to avoid delay (despite queue_size = 1)
             self.ts = message_filters.ApproximateTimeSynchronizer([self.color_sub, self.depth_sub], queue_size = 1, slop = 0.3) # Take in one color image and one depth image with a limite time gap between message time stamps
             self.ts.registerCallback(self.color_depth_callback)
             self.cloud_generator = ColorPclGenerator(intrinsic, self.img_width,self.img_height, frame_id , self.point_type)
         else:
-            self.image_sub = rospy.Subscriber(rospy.get_param('/semantic_pcl/color_image_topic'), Image, self.color_callback, queue_size = 1, buff_size = 30*480*640)
+            self.image_sub = rospy.Subscriber(rospy.get_param('/semantic_pcl/color_image_topic'), Image, self.color_callback, queue_size = 1, buff_size = 30*self.img_height*self.img_width)
         print('Ready.')
 
     def color_callback(self, color_img_ros):

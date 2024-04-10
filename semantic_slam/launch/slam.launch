@@ -4,6 +4,8 @@
   <!--node pkg="orb_slam2" type="rgbd" name="rgbd" output="screen" args="$(find orb_slam2)../../../Vocabulary/ORBvoc.txt $(find semantic_slam)/params/d435.yaml"/-->
   <!--node pkg="orb_slam2" type="rgbd" name="rgbd" output="screen" args="$(find orb_slam2)../../../Vocabulary/ORBvoc.bin $(find orb_slam2)../../RGB-D/RealSense_d435.yaml /camera/rgb/image_raw:=/camera/color/image_raw /camera/depth_registered/image_raw:=/camera/aligned_depth_to_color/image_raw"/-->
   <!--node pkg="ORB_SLAM2" type="RGBD" name="RGBD" output="screen" args="$(find ORB_SLAM2)../../../Vocabulary/ORBvoc.bin $(find semantic_slam)/params/xtion.yaml"/-->
-  <node pkg="ORB_SLAM3" type="RGBD" name="RGBD" output="screen" args="$(find ORB_SLAM3)../../../Vocabulary/ORBvoc.txt $(find ORB_SLAM3)../../RGB-D-Inertial/RealSense_D455.yaml"/>
+  <!-- launch-prefix="xterm -e gdb \-\-args"-->
+  <node pkg="ORB_SLAM3" launch-prefix="xterm -e gdb \-\-args" type="RGBD" name="RGBD" output="screen" args="$(find ORB_SLAM3)../../../Vocabulary/ORBvoc.txt $(find ORB_SLAM3)../../RGB-D-Inertial/RealSense_D435i.yaml"/>
+  <!-- <node pkg="ORB_SLAM3" type="Stereo_Inertial" name="RGBD" output="screen" args="$(find ORB_SLAM3)../../../Vocabulary/ORBvoc.txt $(find ORB_SLAM3)../../Stereo-Inertial/RealSense_D435i.yaml false"/> -->
 
 </launch>
