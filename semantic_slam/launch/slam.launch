@@ -6,6 +6,6 @@
   <!--node pkg="ORB_SLAM2" type="RGBD" name="RGBD" output="screen" args="$(find ORB_SLAM2)../../../Vocabulary/ORBvoc.bin $(find semantic_slam)/params/xtion.yaml"/-->
   <!-- launch-prefix="xterm -e gdb \-\-args"-->
   <!-- <node pkg="ORB_SLAM3" launch-prefix="xterm -e gdb \-\-args" type="RGBD_Inertial" name="RGBD" output="screen" args="$(find ORB_SLAM3)../../../Vocabulary/ORBvoc.txt $(find ORB_SLAM3)../../RGB-D-Inertial/RealSense_D455.yaml"/> -->
-  <node pkg="ORB_SLAM3" launch-prefix="xterm -e gdb \-\-args" type="Stereo_Inertial" name="RGBD" output="screen" args="$(find ORB_SLAM3)../../../Vocabulary/ORBvoc.txt $(find ORB_SLAM3)../../Stereo-Inertial/RealSense_D455.yaml false"/>
+  <node pkg="ORB_SLAM3" type="Stereo_Inertial" name="RGBD" output="screen" args="$(find ORB_SLAM3)../../../Vocabulary/ORBvoc.txt $(find ORB_SLAM3)../../Stereo-Inertial/RealSense_D455_640.yaml false"/>
 
 </launch>
