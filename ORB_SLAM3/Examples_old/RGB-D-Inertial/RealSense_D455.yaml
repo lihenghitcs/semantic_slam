@@ -9,10 +9,10 @@ Camera.type: "PinHole"
 
 # Right Camera calibration and distortion parameters (OpenCV)
 # Parameter configured 20/12
-Camera1.fx: 386.2384033203125
-Camera1.fy: 385.8673095703125
-Camera1.cx: 321.3580017089844
-Camera1.cy: 245.3740234375
+Camera1.fx: 384.0550357129355
+Camera1.fy: 383.87709904040076
+Camera1.cx: 324.7922529492172
+Camera1.cy: 244.3715093790782
 
 # distortion parameters
 # Parameter configured 20/12
@@ -20,11 +20,11 @@ Camera1.cy: 245.3740234375
 # distortion parameters
 # set to zero as provided
 # by the examples
-Camera1.k1: -0.055886127054691315
-Camera1.k2: 0.06571720540523529
-Camera1.p1: 0.00010106845002155751
-Camera1.p2: 0.0008484769496135414
-Camera1.k3: -0.021292367950081825
+Camera1.k1: -0.04773563631406126
+Camera1.k2: 0.03963023627862944
+Camera1.p1: 0.00027490844309867454
+Camera1.p2: 0.00041676306683137687
+#Camera1.k3: -0.021292367950081825
 
 # Camera resolution
 # Parameter configured 7/12
@@ -52,10 +52,10 @@ IMU.T_b_c1: !!opencv-matrix
    rows: 4
    cols: 4
    dt: f
-   data: [ 0.99997832, -0.00620916 , 0.00219188 ,-0.05084614,
-           0.00619415, 0.99995777 , 0.00678918 ,-0.02116661,
-          -0.00223394, -0.00677546 , 0.99997455 ,-0.02298333,
-           0., 0., 0., 1.]
+   data: [ 9.99988418e-01,  4.72395514e-03, -9.20741013e-04, 2.92501724e-02, 
+                -4.73580756e-03,  9.99899987e-01, -1.33262544e-02, 5.18190376e-03, 
+                8.57696298e-04,  1.33304605e-02,  9.99910778e-01, 1.95584892e-02, 
+                0.00000000e+00,  0.00000000e+00,  0.00000000e+00,1.00000000e+00]
 
 
 # Do not insert KFs when recently lost
@@ -64,10 +64,10 @@ IMU.InsertKFsWhenLost: 0
 
 # IMU noise (Use those from VINS-mono)
 # Parameter configured 22/12 
-IMU.NoiseGyro: 0.00013062521816219243 # 3 # 2.44e-4 #1e-3 # rad/s^0.5
-IMU.NoiseAcc: 0.0015738017400346728 #2 # 1.47e-3 #1e-2 # m/s^1.5
-IMU.GyroWalk: 2.4663463419911525e-06  # rad/s^1.5
-IMU.AccWalk: 0.00012548390342628348  # m/s^2.5
+IMU.NoiseGyro: 1.5605621210326645e-03 # 3 # 2.44e-4 #1e-3 # rad/s^0.5
+IMU.NoiseAcc: 1.2484198465148116e-02 #2 # 1.47e-3 #1e-2 # m/s^1.5
+IMU.GyroWalk: 1.3530897067825434e-05  # rad/s^1.5
+IMU.AccWalk: 2.6007410648239940e-04  # m/s^2.5
 IMU.Frequency: 200.0
 
 #--------------------------------------------------------------------------------------------
@@ -107,4 +107,4 @@ Viewer.ViewpointZ: -3.5
 Viewer.ViewpointF: 500.0
 
 #System.SaveAtlasToFile: "map.osa"
-System.LoadAtlasFromFile: "map.osa"
+#System.LoadAtlasFromFile: "map.osa"
