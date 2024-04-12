@@ -99,6 +99,12 @@ public:
         BINARY_FILE=1,
     };
 
+    enum IMUMethod{
+        IMU_ORB_SLAM3=0,
+        VIG_INIT=1,
+        IMU_INITIALIZATION=2
+    };
+
 public:
     EIGEN_MAKE_ALIGNED_OPERATOR_NEW
     // Initialize the SLAM system. It launches the Local Mapping, Loop Closing and Viewer threads.

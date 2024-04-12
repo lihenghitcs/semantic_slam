@@ -145,6 +145,8 @@ public:
     std::vector<int> mvIniMatches;
     std::vector<cv::Point2f> mvbPrevMatched;
     std::vector<cv::Point3f> mvIniP3D;
+
+    //std::vector<Frame> mvFrames;
     Frame mInitialFrame;
 
     // Lists used to recover the full camera trajectory at the end of the execution.
@@ -171,10 +173,12 @@ public:
     double t0IMU; // time-stamp of IMU initialization
     bool mFastInit = false;
 
+    Settings* mPSettings;
 
     vector<MapPoint*> GetLocalMapMPS();
 
     bool mbWriteStats;
+    bool mbimuInit;
 
 #ifdef REGISTER_TIMES
     void LocalMapStats2File();

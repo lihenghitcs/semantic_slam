@@ -237,7 +237,8 @@ void LoopClosing::Run()
 
                         Eigen::Vector3d phi = LogSO3(g2oSww_new.rotation().toRotationMatrix());
                         cout << "phi = " << phi.transpose() << endl; 
-                        if (fabs(phi(0))<0.008f && fabs(phi(1))<0.008f && fabs(phi(2))<0.349f)
+                        //if (fabs(phi(0))<0.008f && fabs(phi(1))<0.008f && fabs(phi(2))<0.349f)
+                        if (fabs(phi(0))<0.1f && fabs(phi(1))<0.1f && fabs(phi(2))<0.349f)
                         {
                             if(mpCurrentKF->GetMap()->IsInertial())
                             {
@@ -581,15 +582,16 @@ bool LoopClosing::DetectCommonRegionsFromBoW(std::vector<KeyFrame*> &vpBowCand, 
     int nBoWMatches = 20;
     int nBoWInliers = 15;
     int nSim3Inliers = 20;
-    int nProjMatches = 50;
-    int nProjOptMatches = 80;
+    int nProjMatches = 20;
+    int nProjOptMatches = 20;
 
     set<KeyFrame*> spConnectedKeyFrames = mpCurrentKF->GetConnectedKeyFrames();
 
     int nNumCovisibles = 10;
 
     ORBmatcher matcherBoW(0.9, true);
-    ORBmatcher matcher(0.75, true);
+    //ORBmatcher matcher(0.75, true);
+    ORBmatcher matcher(0.8, true);
 
     // Varibles to select the best numbe
     KeyFrame* pBestMatchedKF;

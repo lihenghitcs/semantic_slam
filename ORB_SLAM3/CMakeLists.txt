@@ -44,15 +44,18 @@ MESSAGE(${OpenCV_VERSION})
 
 find_package(Eigen3 3.1.0 REQUIRED)
 find_package(Pangolin REQUIRED)
+find_package(Ceres REQUIRED)
 find_package(realsense2)
 
 include_directories(
 ${PROJECT_SOURCE_DIR}
 ${PROJECT_SOURCE_DIR}/include
+${PROJECT_SOURCE_DIR}/include/util
 ${PROJECT_SOURCE_DIR}/include/CameraModels
 ${PROJECT_SOURCE_DIR}/Thirdparty/Sophus
 ${EIGEN3_INCLUDE_DIR}
 ${Pangolin_INCLUDE_DIRS}
+${CERES_INCLUDE_DIRS}
 )
 
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/lib)
@@ -86,6 +89,8 @@ src/GeometricTools.cc
 src/TwoViewReconstruction.cc
 src/Config.cc
 src/Settings.cc
+src/ImuInitializer.cc
+src/polynomial.cc
 include/System.h
 include/Tracking.h
 include/LocalMapping.h
@@ -115,7 +120,14 @@ include/GeometricTools.h
 include/TwoViewReconstruction.h
 include/SerializationUtils.h
 include/Config.h
-include/Settings.h)
+include/Settings.h
+include/ImuInitializer.h
+include/util/eigen_defs.h 
+include/util/svd.h 
+include/imu_ceres.h 
+include/methods.h 
+include/polynomial.h
+)
 
 add_subdirectory(Thirdparty/g2o)
 
@@ -123,6 +135,7 @@ target_link_libraries(${PROJECT_NAME}
 ${OpenCV_LIBS}
 ${EIGEN3_LIBS}
 ${Pangolin_LIBRARIES}
+${CERES_LIBRARIES}
 ${PROJECT_SOURCE_DIR}/Thirdparty/DBoW2/lib/libDBoW2.so
 ${PROJECT_SOURCE_DIR}/Thirdparty/g2o/lib/libg2o.so
 -lboost_serialization

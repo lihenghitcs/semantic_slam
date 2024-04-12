@@ -41,6 +41,8 @@ namespace IMU
 {
 
 const float GRAVITY_VALUE=9.81;
+const double GRAVITY_MAGNITUDE = 9.81;
+const Eigen::Vector3d GRAVITY_VECTOR(0.0, 0.0, -GRAVITY_MAGNITUDE);
 
 //IMU measurement (gyro, accelerometer and timestamp)
 class Point
@@ -207,6 +209,10 @@ public:
         std::cout << "end pint meas:\n";
     }
 
+    Eigen::Matrix3f GetDeltaRotation(const Eigen::Vector3f& bg);
+    Eigen::Vector3d GetGyroDeltaBias(const Eigen::Vector3d& bg);
+
+
 public:
     float dT;
     Eigen::Matrix<float,15,15> C;
@@ -227,7 +233,9 @@ private:
     // Dif between original and updated bias
     // This is used to compute the updated values of the preintegration
     Eigen::Matrix<float,6,1> db;
+    std::mutex mMutex;
 
+public:
     struct integrable
     {
         template<class Archive>
@@ -247,7 +255,6 @@ private:
 
     std::vector<integrable> mvMeasurements;
 
-    std::mutex mMutex;
 };
 
 // Lie Algebra Functions

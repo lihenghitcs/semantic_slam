@@ -81,7 +81,7 @@ System::System(const string &strVocFile, const string &strSettingsFile, const eS
         mStrLoadAtlasFromFile = settings_->atlasLoadFile();
         mStrSaveAtlasToFile = settings_->atlasSaveFile();
 
-        //cout << (*settings_) << endl;
+        cout << (*settings_) << endl;
     }
     else{
         settings_ = nullptr;
@@ -182,7 +182,7 @@ System::System(const string &strVocFile, const string &strSettingsFile, const eS
         mpAtlas->SetInertialSensor();
 
     //Create Drawers. These are used by the Viewer
-    mpFrameDrawer = new FrameDrawer(mpAtlas);
+    mpFrameDrawer = new FrameDrawer(mpAtlas, settings_);
     mpMapDrawer = new MapDrawer(mpAtlas, strSettingsFile, settings_);
 
     //Initialize the Tracking thread
@@ -192,7 +192,7 @@ System::System(const string &strVocFile, const string &strSettingsFile, const eS
                              mpAtlas, mpKeyFrameDatabase, strSettingsFile, mSensor, settings_, strSequence);
 
     //Initialize the Local Mapping thread and launch
-    mpLocalMapper = new LocalMapping(this, mpAtlas, mSensor==MONOCULAR || mSensor==IMU_MONOCULAR,
+    mpLocalMapper = new LocalMapping(this, mpAtlas, settings_, mSensor==MONOCULAR || mSensor==IMU_MONOCULAR,
                                      mSensor==IMU_MONOCULAR || mSensor==IMU_STEREO || mSensor==IMU_RGBD, strSequence);
     mptLocalMapping = new thread(&ORB_SLAM3::LocalMapping::Run,mpLocalMapper);
     mpLocalMapper->mInitFr = initFr;

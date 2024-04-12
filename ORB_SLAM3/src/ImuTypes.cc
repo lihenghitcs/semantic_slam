@@ -309,6 +309,26 @@ Eigen::Vector3f Preintegrated::GetDeltaPosition(const Bias &b_)
     return dP + JPg * dbg + JPa * dba;
 }
 
+
+Eigen::Matrix3f Preintegrated::GetDeltaRotation(const Eigen::Vector3f& bg) {
+    //return dR*ExpSO3(JRg*(bg-b.head<3>()));
+
+    std::unique_lock<std::mutex> lock(mMutex);
+    Eigen::Vector3f dbg;
+    dbg << bg(0)-b.bwx,bg(1)-b.bwy,bg(2)-b.bwz;
+    return NormalizeRotation(dR * Sophus::SO3f::exp(JRg * dbg).matrix());
+
+}
+
+Eigen::Vector3d Preintegrated::GetGyroDeltaBias(const Eigen::Vector3d& bg)
+{
+    std::unique_lock<std::mutex> lock(mMutex);
+    Eigen::Vector3d bg_(b.bax, b.bay, b.baz);
+    return bg-bg_;
+
+}
+
+
 Eigen::Matrix3f Preintegrated::GetUpdatedDeltaRotation()
 {
     std::unique_lock<std::mutex> lock(mMutex);
