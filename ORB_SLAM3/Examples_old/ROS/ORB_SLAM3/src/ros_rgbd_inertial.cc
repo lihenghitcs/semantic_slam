@@ -301,7 +301,8 @@ void ImageGrabber::SyncWithImu()
       br.sendTransform(transformStamped);
 
       geometry_msgs::PoseStamped pose;
-      pose.header.stamp = ros::Time::now();
+      // pose.header.stamp = ros::Time::now();
+      pose.header.stamp = cv_ptr->header.stamp;
       pose.header.frame_id ="world";
 
       cv::Mat Rwc = Tcw.rowRange(0,3).colRange(0,3).t(); // Rotation information
