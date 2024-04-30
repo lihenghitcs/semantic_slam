@@ -44,6 +44,7 @@ LocalMapping::LocalMapping(System* pSys, Atlas *pAtlas, Settings* settings, cons
 
     mNumLM = 0;
     mNumKFCulling=0;
+    mInitialized = false;
 
 #ifdef REGISTER_TIMES
     nLBA_exec = 0;
@@ -2103,7 +2104,8 @@ void LocalMapping::IMUAlign(float priorG, float priorA, bool bFIBA)
             }
 
             std::cout << "imu initialization sucessful." << std::endl;
-                
+            std::cout << "mInitialized set to true." << std::endl;
+            mInitialized = true;
         }
         else 
         {
