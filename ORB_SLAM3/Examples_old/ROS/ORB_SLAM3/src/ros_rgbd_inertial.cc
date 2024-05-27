@@ -46,6 +46,7 @@
 #include"../../../include/Converter.h"
 #include <nav_msgs/Path.h>
 #include <nav_msgs/Odometry.h>
+#include <std_msgs/Bool.h>
 #include <opencv2/core/eigen.hpp>
 
 // #include <gtsam/geometry/Rot3.h>
@@ -103,6 +104,7 @@ public:
     ros::Publisher pub_pose = nh.advertise<geometry_msgs::PoseStamped>("Pose", 100);
     ros::Publisher pub_odom= nh.advertise<nav_msgs::Odometry> ("Odometry", 10); 
     ros::Publisher pub_camerapath= nh.advertise<nav_msgs::Path> ("Path", 10); 
+    ros::Publisher pub_slaminitialized= nh.advertise<std_msgs::Bool> ("/bSLAMInitialized", 10); 
 
     ImageGrabber(ORB_SLAM3::System* pSLAM, ImuGrabber *pImuGb, const bool bRect, const bool bClahe): mpSLAM(pSLAM), mpImuGb(pImuGb), do_rectify(bRect), mbClahe(bClahe){}
 
@@ -303,6 +305,9 @@ void ImageGrabber::SyncWithImu()
         continue;
       }
       if(!firstKFflag){
+        std_msgs::Bool tempPubBool;
+        tempPubBool.data = true;
+        pub_slaminitialized.publish(tempPubBool);
         vector<ORB_SLAM3::KeyFrame*> vpKFs = mpSLAM->mpAtlas->GetCurrentMap()->GetAllKeyFrames();
         sort(vpKFs.begin(),vpKFs.end(),ORB_SLAM3::KeyFrame::lId);
         if(vpKFs.size() == 0 || !vpKFs[0]){

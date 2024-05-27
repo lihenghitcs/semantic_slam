@@ -103,8 +103,8 @@ Call Stack (most recent call first):
 
 
 -- Using CATKIN_DEVEL_PREFIX: /home/hit/liheng/semantic_ws/src/semantic_slam/ORB_SLAM3/Examples_old/ROS/ORB_SLAM3/build/devel
--- Using CMAKE_PREFIX_PATH: /opt/ros/noetic
--- This workspace overlays: /opt/ros/noetic
+-- Using CMAKE_PREFIX_PATH: /home/hit/liheng/semantic_ws/devel;/opt/ros/noetic
+-- This workspace overlays: /home/hit/liheng/semantic_ws/devel;/opt/ros/noetic
 -- Found PythonInterp: /home/hit/anaconda3/bin/python (found suitable version "3.11.7", minimum required is "3") 
 -- Using PYTHON_EXECUTABLE: /home/hit/anaconda3/bin/python
 -- Using Debian Python package layout
@@ -130,12 +130,12 @@ Build type: Release
 -- Build files have been written to: /home/hit/liheng/semantic_ws/src/semantic_slam/ORB_SLAM3/Examples_old/ROS/ORB_SLAM3/build
 [  0%] Built target rospack_genmsg_libexe
 [  0%] Built target rosbuild_precompile
+[ 16%] Built target Mono
+[ 33%] Built target RGBD
+[ 50%] Built target Mono_Inertial
+[ 66%] Built target Stereo_Inertial
 Scanning dependencies of target RGBD_Inertial
-[ 16%] Built target Mono_Inertial
-[ 33%] Built target Stereo_Inertial
-[ 66%] Built target RGBD
-[ 66%] Built target Stereo
-[ 83%] Built target Mono
+[ 83%] Built target Stereo
 [ 91%] Building CXX object CMakeFiles/RGBD_Inertial.dir/src/ros_rgbd_inertial.cc.o
 In file included from /home/hit/liheng/semantic_ws/src/semantic_slam/ORB_SLAM3/Examples_old/ROS/ORB_SLAM3/../../../Thirdparty/g2o/g2o/types/types_six_dof_expmap.h:37,
                  from /home/hit/liheng/semantic_ws/src/semantic_slam/ORB_SLAM3/Examples_old/ROS/ORB_SLAM3/../../../include/Converter.h:26,
